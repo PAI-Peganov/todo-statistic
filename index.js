@@ -2,6 +2,9 @@ const {getAllFilePathsWithExtension, readFile} = require('./fileSystem');
 const {readLine} = require('./console');
 
 const files = getFiles();
+const comments = getFiles().map(str => 
+    str.split("\r\n").map(line => line.indexOf("// " + "TODO ") !== -1 ? line.substring(line.indexOf("// " + "TODO ")) + "\n" : "").join("")
+).join("").split("\n").filter(com => com !== "");
 
 console.log('Please, write your command!');
 readLine(processCommand);
@@ -14,6 +17,7 @@ function getFiles() {
 function processCommand(command) {
     switch (command) {
         case 'exit':
+            console.log(comments);
             process.exit(0);
             break;
         default:
